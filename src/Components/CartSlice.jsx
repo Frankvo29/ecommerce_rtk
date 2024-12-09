@@ -5,11 +5,11 @@ const initialState = {
 }
 
 const CartSlice = createSlice({
-    name: "cart",
+    name: "cart", // khi được gọi từ file khác, sẽ dùng tên "cart" để access. e.g: cartItems = useSelector(state => state.cart.cartItems)
     initialState,
     reducers: {
         addItemToCart(state, action) {
-            const existingItem = state.cartItems.find(item => item.id === action.payload.id);
+            const existingItem = state.cartItems.find(item => item.id === action.payload.id); // check product đã có trong cart chưa, có rồi thì +1, chưa có thì add mới.
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {

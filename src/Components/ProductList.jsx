@@ -4,9 +4,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addItemToCart } from './CartSlice';
 
 const ProductList = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); // hàm để sử dụng phía dưới, gửi action properties tới store
   const cartItems = useSelector(state => state.cart.cartItems); // Lấy các sản phẩm trong giỏ hàng từ Redux store
-  const [disabledProducts, setDisabledProducts] = useState([]);
+  const [disabledProducts, setDisabledProducts] = useState([]); // Array chứa các sản phẩm sau khi add vô cart = được disable
 
   const products = [
     { id: 1, name: 'Product A', price: 60 },
@@ -15,25 +15,25 @@ const ProductList = () => {
   ];
 
   useEffect(() => {
-    const cartProductIds = cartItems.map(item => item.id); // khi item trong cart được update, lấy thông tin đó, lấy id và đưa vào disabled list
+    const cartProductIds = cartItems.map(item => item.id); // mỗi khi item trong cart thay đổi, useEffect sẽ update, lấy id items và đưa vào disabled list
     setDisabledProducts(cartProductIds);
   }, [cartItems]); 
 
   const handleAddToCart = (product) => {
-    dispatch(addItemToCart(product)); // Thêm sản phẩm vào giỏ hàng
+    dispatch(addItemToCart(product)); // dùng dispatch để báo về store, sử dụng Reduce addItemToCard trong store
   };
 
   return (
     <div className="product-list">
       <h2 className="product-list-title">Products</h2>
       <ul className="product-list-items">
-        {products.map(product => (
+        {products.map(product => ( // list ra các products
           <li key={product.id} className="product-list-item">
             <span>{product.name} - ${product.price}</span>
             <button
-              className={`add-to-cart-btn ${disabledProducts.includes(product.id) ? "disabled" : ""}`}
-              onClick={() => handleAddToCart(product)}
-              disabled={disabledProducts.includes(product.id)}>
+              className={`add-to-cart-btn ${disabledProducts.includes(product.id) ? "disabled" : ""}`} // default name là add-to-cart-btn, khi bị disabled sẽ có thêm chữ disabled
+              onClick={() => handleAddToCart(product)} // gọi handleAddToCart
+              disabled={disabledProducts.includes(product.id)}/* nếu có trong list disabledProduct, button sẽ bị disable */> 
               Add to Cart
             </button>
           </li>
